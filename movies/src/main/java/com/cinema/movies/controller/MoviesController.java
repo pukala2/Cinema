@@ -1,10 +1,15 @@
 package com.cinema.movies.controller;
 
+import com.cinema.movies.config.MoviesServiceConfig;
+import com.cinema.movies.config.Properties;
 import com.cinema.movies.entity.Movie;
 import com.cinema.movies.request.CreateMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
 import com.cinema.movies.response.MovieResponse;
 import com.cinema.movies.service.MoviesService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +24,17 @@ public class MoviesController {
 
     @Autowired
     private MoviesService moviesService;
+
+    @Autowired
+    private MoviesServiceConfig moviesServiceConfig;
+
+    @GetMapping("properties")
+    public String getPropertyDetails() throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        Properties properties = new Properties(moviesServiceConfig.getMsg(), moviesServiceConfig.getBuildVersion(),
+                moviesServiceConfig.getMailDetails(), moviesServiceConfig.getActiveBranches());
+        return ow.writeValueAsString(properties);
+    }
 
     @GetMapping("getAll")
     public List<MovieResponse> getAllMovies() {

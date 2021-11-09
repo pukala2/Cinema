@@ -1,5 +1,7 @@
 package com.cinema.rooms.controller;
 
+import com.cinema.rooms.config.MoviesServiceConfig;
+import com.cinema.rooms.config.Properties;
 import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.entity.Seat;
 import com.cinema.rooms.request.CreateRoomRequest;
@@ -7,6 +9,9 @@ import com.cinema.rooms.request.UpdateSeatRequest;
 import com.cinema.rooms.response.RoomResponse;
 import com.cinema.rooms.response.SeatResponse;
 import com.cinema.rooms.service.RoomService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,17 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private MoviesServiceConfig moviesServiceConfig;
+
+    @GetMapping("properties")
+    public String getPropertyDetails() throws JsonProcessingException {
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        Properties properties = new Properties(moviesServiceConfig.getMsg(), moviesServiceConfig.getBuildVersion(),
+                moviesServiceConfig.getMailDetails(), moviesServiceConfig.getActiveBranches());
+        return ow.writeValueAsString(properties);
+    }
 
     @GetMapping("getAll")
     public List<RoomResponse> getAll() {
