@@ -1,4 +1,4 @@
-package com.cinema.rooms.config;
+package com.cinema.rooms.model;
 
 import lombok.Getter;
 import lombok.Setter;
