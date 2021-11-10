@@ -1,7 +1,7 @@
 package com.cinema.rooms.controller;
 
 import com.cinema.rooms.config.MoviesServiceConfig;
-import com.cinema.rooms.config.Properties;
+import com.cinema.rooms.model.Properties;
 import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.entity.Seat;
 import com.cinema.rooms.request.CreateRoomRequest;

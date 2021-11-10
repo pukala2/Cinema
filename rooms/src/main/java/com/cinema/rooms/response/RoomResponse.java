@@ -1,6 +1,7 @@
 package com.cinema.rooms.response;
 
 import com.cinema.rooms.entity.Room;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Setter
 public class RoomResponse {
 
+    @JsonIgnore
     private Long id;
 
     private int roomNumber;

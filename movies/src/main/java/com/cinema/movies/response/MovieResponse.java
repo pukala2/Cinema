@@ -1,7 +1,6 @@
 package com.cinema.movies.response;
 
 import com.cinema.movies.entity.Movie;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 

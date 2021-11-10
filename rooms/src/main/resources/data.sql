@@ -26,9 +26,9 @@ CREATE TABLE seat (
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
  VALUES (1, 0, 1, 1);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
- VALUES (2, 0, 1, 1);
+ VALUES (2, 1, 1, 1);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
- VALUES (3, 0, 1, 1);
+ VALUES (3, 1, 1, 1);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
  VALUES (4, 0, 1, 1);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
@@ -37,7 +37,7 @@ INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
  VALUES (1, 0, 2, 2);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
- VALUES (2, 0, 2, 2);
+ VALUES (2, 1, 2, 2);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
  VALUES (3, 0, 2, 2);
 INSERT INTO seat (seat_number, is_bocked, room_number, room_id)
