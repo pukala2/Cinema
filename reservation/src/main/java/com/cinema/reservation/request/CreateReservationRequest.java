@@ -1,14 +1,14 @@
-package com.cinema.reservation.response;
+package com.cinema.reservation.request;
 
 import com.cinema.reservation.entity.Client;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class CreateReservationRequest {
-    private int roomNumber;
-    private int seatsNumber;
-    private String movieTitle;
-    Client seats;
+    List<SeatRequest> seatRequests;
+    Client client;
 }

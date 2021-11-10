@@ -1,4 +1,4 @@
-package com.cinema.reservation.model;
+package com.cinema.reservation.client.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +10,7 @@ import java.util.List;
 @Setter
 @ToString
 public class Room {
-    private Long id;
     private int roomNumber;
     private int seatsNumber;
-    List<Seat> seats;
+    List<SeatResponse> seatResponseRespons;
 }

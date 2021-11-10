@@ -17,16 +17,12 @@ public class ReservationResponse {
 
     private int seatsNumber;
 
-    private String movieTitle;
-
     private ClientResponse client;
 
     public ReservationResponse(Reservation reservation) {
         this.id = reservation.getId();
         this.roomNumber = reservation.getRoomNumber();
         this.seatsNumber = reservation.getSeatsNumber();
-        this.movieTitle = reservation.getMovieTitle();
         this.client = new ClientResponse(reservation.getClient());
-
     }
 }
