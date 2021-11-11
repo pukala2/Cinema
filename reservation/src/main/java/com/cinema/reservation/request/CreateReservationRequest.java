@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CreateReservationRequest {
-    List<SeatRequest> seatRequests;
-    Client client;
+    private List<SeatRequest> seatRequests;
+    private String movieTitle;
+    private Client client;
 }

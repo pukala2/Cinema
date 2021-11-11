@@ -5,17 +5,18 @@ CREATE TABLE reservation (
   reservation_id int NOT NULL AUTO_INCREMENT,
   room_number int NOT NULL,
   seats_number int NOT NULL,
+  movie_title varchar(100) NOT NULL,
   PRIMARY KEY (reservation_id)
 );
 
-INSERT INTO reservation (room_number, seats_number)
- VALUES (1, 2);
+INSERT INTO reservation (room_number, seats_number, movie_title)
+ VALUES (1, 2, 'Kiler');
 
-INSERT INTO reservation (room_number, seats_number)
- VALUES (1, 3);
+INSERT INTO reservation (room_number, seats_number, movie_title)
+ VALUES (1, 3, 'Kiler');
 
-INSERT INTO reservation (room_number, seats_number)
- VALUES (2, 2);
+INSERT INTO reservation (room_number, seats_number, movie_title)
+ VALUES (2, 2, 'Anabel');
 
 CREATE TABLE client (
   client_id int NOT NULL AUTO_INCREMENT,

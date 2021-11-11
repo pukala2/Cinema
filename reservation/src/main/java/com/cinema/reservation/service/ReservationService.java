@@ -1,5 +1,6 @@
 package com.cinema.reservation.service;
 
+import com.cinema.reservation.entity.Client;
 import com.cinema.reservation.entity.Reservation;
 import com.cinema.reservation.client.model.SeatResponse;
 import com.cinema.reservation.repository.ClientRepository;
@@ -62,7 +63,8 @@ public class ReservationService {
             Reservation reservation = new Reservation();
             reservation.setRoomNumber(seatResponse.getRoomNumber());
             reservation.setSeatsNumber(seatResponse.getSeatNumber());
-            reservation.setClient(createReservationRequest.getClient());
+            reservation.setMovieTitle(createReservationRequest.getMovieTitle());
+            setClient(createReservationRequest.getClient(), reservation);
 
             reservation = reservationRepository.save(reservation);
             reservation.getClient().setReservation(reservation);
@@ -71,5 +73,15 @@ public class ReservationService {
             reservations.add(reservation);
         });
         return reservations;
+    }
+    private void setClient(Client clientReq, Reservation reservation) {
+        Client client = new Client();
+        client.setReservation(clientReq.getReservation());
+        client.setEmail(clientReq.getEmail());
+        client.setName(clientReq.getName());
+        client.setSurname(clientReq.getSurname());
+        client.setPaid(clientReq.isPaid());
+
+        reservation.setClient(client);
     }
 }

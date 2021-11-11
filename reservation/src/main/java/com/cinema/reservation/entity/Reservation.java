@@ -24,6 +24,9 @@ public class Reservation {
     @Column(name = "seats_number")
     private int seatsNumber;
 
+    @Column(name = "movie_title")
+    private String movieTitle;
+
     @OneToOne(mappedBy = "reservation")
     Client client;
 }
