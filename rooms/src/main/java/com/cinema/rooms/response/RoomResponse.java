@@ -15,9 +15,9 @@ public class RoomResponse {
     @JsonIgnore
     private Long id;
 
-    private int roomNumber;
+    private Integer roomNumber;
 
-    private int seatsNumber;
+    private Integer seatsNumber;
 
     private List<SeatResponse> seats;
 

@@ -12,15 +12,15 @@ public class SeatResponse {
     @JsonIgnore
     private Long id;
 
-    private int seatNumber;
+    private Integer seatNumber;
 
-    private boolean isBocked;
+    private Boolean isBocked;
 
-    private int roomNumber;
+    private Integer roomNumber;
 
     public SeatResponse(Seat seat) {
         this.id = seat.getId();
-        this.isBocked = seat.isBocked();
+        this.isBocked = seat.getIsBocked();
         this.seatNumber = seat.getSeatNumber();
         this.roomNumber = seat.getRoomNumber();
     }

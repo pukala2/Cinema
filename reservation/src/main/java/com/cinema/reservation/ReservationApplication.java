@@ -11,8 +11,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @RefreshScope
 @EnableFeignClients
-@ComponentScan({"com.cinema.reservation.controller", "com.cinema.reservation.service", "com.cinema.reservation.config"})
-@EntityScan({"com.cinema.reservation.entity", "com.cinema.reservation.model"})
+@ComponentScan({"com.cinema.reservation.controller", "com.cinema.reservation.service",
+		"com.cinema.reservation.config", "com.cinema.reservation.utils"})
+@EntityScan({"com.cinema.reservation.entity", "com.cinema.reservation.config.model"})
 @EnableJpaRepositories("com.cinema.reservation.repository")
 public class ReservationApplication {
 

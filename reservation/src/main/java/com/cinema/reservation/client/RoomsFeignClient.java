@@ -11,7 +11,7 @@ import java.util.List;
 public interface RoomsFeignClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "getSeatsFromRoom", consumes = "application/json")
-    List<SeatResponse> getSeatsFromRoom(@RequestParam int roomNumber);
+    List<SeatResponse> getSeatsFromRoom(@RequestParam Integer roomNumber);
 
     @RequestMapping(method = RequestMethod.PUT, value = "changeSeatReservation", consumes = "application/json")
     String changeSeatReservation(@RequestBody UpdateSeatRequest updateSeatRequest);

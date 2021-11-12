@@ -1,4 +1,4 @@
-package com.cinema.reservation.model;
+package com.cinema.reservation.config.model;
 
 import lombok.Getter;
 import lombok.Setter;

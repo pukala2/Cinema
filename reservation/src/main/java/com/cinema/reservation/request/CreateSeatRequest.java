@@ -1,4 +1,4 @@
-package com.cinema.rooms.request;
+package com.cinema.reservation.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CreateSeatRequest {
-    private Integer seatNumber;
-    private Boolean isBocked;
     private Integer roomNumber;
+    private Integer seatNumber;
 }

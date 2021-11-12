@@ -14,7 +14,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class MoviesServiceConfig {
+public class RoomServiceConfig {
     private String msg;
     private String buildVersion;
     private Map<String, String> mailDetails;

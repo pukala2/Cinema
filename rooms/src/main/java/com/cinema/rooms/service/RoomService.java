@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,7 +28,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    public List<Seat> getSeatsFromRoom(final int roomNumber) {
+    public List<Seat> getSeatsFromRoom(final Integer roomNumber) {
         return seatRepository.getByRoomNumber(roomNumber);
     }
 
@@ -39,7 +40,7 @@ public class RoomService {
         for (int i = 0; i < createRoomRequest.getSeatsNumber(); i++) {
             Seat seat = new Seat();
             seat.setSeatNumber(i + 1);
-            seat.setBocked(false);
+            seat.setIsBocked(false);
             seat.setRoom(room);
             seats.add(seat);
             seat.setRoomNumber(room.getRoomNumber());
@@ -61,7 +62,7 @@ public class RoomService {
         return seatRepository.save(seat);
     }
 
-    public List<Seat> getSeatsByRoomNumber(int roomNumber) {
+    public List<Seat> getSeatsByRoomNumber(Integer roomNumber) {
         return seatRepository.getByRoomNumber(roomNumber);
     }
 
@@ -69,7 +70,7 @@ public class RoomService {
         seatRepository.deleteAll(seats);
     }
 
-    public void removeRoomByRoomNumber(int roomNumber) {
+    public void removeRoomByRoomNumber(Integer roomNumber) {
         roomRepository.removeByRoomNumber(roomNumber);
     }
 
@@ -79,15 +80,15 @@ public class RoomService {
                 updateSeatRequest.getSeatNumber());
 
         if (seat.isPresent()) {
-            seat.get().setBocked(updateSeatRequest.isBocked());
+            seat.get().setIsBocked(updateSeatRequest.getIsBocked());
             return seat;
         }
         return seat;
     }
 
-    private Optional<Seat> getSeatsFromRoom(int roomNumber, int seatNumber) {
+    private Optional<Seat> getSeatsFromRoom(Integer roomNumber, Integer seatNumber) {
         List<Seat> seats = seatRepository.getByRoomNumber(roomNumber);
-        return seats.stream().filter(s -> s.getSeatNumber() == seatNumber)
+        return seats.stream().filter(s -> Objects.equals(s.getSeatNumber(), seatNumber))
                 .findAny();
     }
 }

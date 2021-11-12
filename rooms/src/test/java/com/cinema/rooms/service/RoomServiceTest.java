@@ -2,7 +2,6 @@ package com.cinema.rooms.service;
 
 import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.entity.Seat;
-import com.cinema.rooms.repository.RoomRepository;
 import com.cinema.rooms.repository.SeatRepository;
 import com.cinema.rooms.request.CreateRoomRequest;
 import com.cinema.rooms.request.UpdateSeatRequest;
@@ -45,11 +44,11 @@ class RoomServiceTest {
 
         UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
         updateSeatRequest.setRoomNumber(1);
-        updateSeatRequest.setBocked(true);
+        updateSeatRequest.setIsBocked(true);
         updateSeatRequest.setSeatNumber(1);
 
         Seat seat = new Seat();
-        seat.setBocked(false);
+        seat.setIsBocked(false);
         seat.setSeatNumber(1);
         seat.setRoomNumber(1);
 
@@ -59,7 +58,7 @@ class RoomServiceTest {
 
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertEquals(1, result.get().getRoomNumber());
-        Assertions.assertTrue(result.get().isBocked());
+        Assertions.assertTrue(result.get().getIsBocked());
         Assertions.assertEquals(1, result.get().getSeatNumber());
     }
 
@@ -68,11 +67,11 @@ class RoomServiceTest {
 
         UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
         updateSeatRequest.setRoomNumber(1);
-        updateSeatRequest.setBocked(true);
+        updateSeatRequest.setIsBocked(true);
         updateSeatRequest.setSeatNumber(1);
 
         Seat seat = new Seat();
-        seat.setBocked(false);
+        seat.setIsBocked(false);
         seat.setSeatNumber(2);
         seat.setRoomNumber(1);
 

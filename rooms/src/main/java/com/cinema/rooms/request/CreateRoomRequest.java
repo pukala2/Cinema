@@ -8,10 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CreateRoomRequest {
-
-    private int roomNumber;
-
-    private int seatsNumber;
-
+    private Integer roomNumber;
+    private Integer seatsNumber;
     private List<CreateSeatRequest> seats;
 }

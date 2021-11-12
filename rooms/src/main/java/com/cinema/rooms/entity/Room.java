@@ -20,10 +20,10 @@ public class Room {
     private Long id;
 
     @Column(name = "room_number")
-    private int roomNumber;
+    private Integer roomNumber;
 
     @Column(name = "seats_number")
-    private int seatsNumber;
+    private Integer seatsNumber;
 
     @OneToMany(mappedBy = "room")
     List<Seat> seats;

@@ -19,13 +19,13 @@ public class Seat {
     private Long id;
 
     @Column(name = "seat_number")
-    private int seatNumber;
+    private Integer seatNumber;
 
     @Column(name = "is_bocked")
-    private boolean isBocked;
+    private Boolean isBocked;
 
     @Column(name = "room_number")
-    private int roomNumber;
+    private Integer roomNumber;
 
     @ManyToOne
     @JoinColumn(name = "room_id")

@@ -1,6 +1,7 @@
 package com.cinema.reservation.entity;
 
 import com.cinema.reservation.request.CreateReservationRequest;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,13 +20,16 @@ public class Reservation {
     private Long id;
 
     @Column(name = "room_number")
-    private int roomNumber;
+    private Integer roomNumber;
 
-    @Column(name = "seats_number")
-    private int seatsNumber;
+    @Column(name = "seat_number")
+    private Integer seatNumber;
 
     @Column(name = "movie_title")
     private String movieTitle;
+
+    @Column(name = "reservation_code")
+    private String reservationCode;
 
     @OneToOne(mappedBy = "reservation")
     Client client;

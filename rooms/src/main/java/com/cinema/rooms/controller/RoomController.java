@@ -1,6 +1,6 @@
 package com.cinema.rooms.controller;
 
-import com.cinema.rooms.config.MoviesServiceConfig;
+import com.cinema.rooms.config.RoomServiceConfig;
 import com.cinema.rooms.model.Properties;
 import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.entity.Seat;
@@ -29,13 +29,13 @@ public class RoomController {
     private RoomService roomService;
 
     @Autowired
-    private MoviesServiceConfig moviesServiceConfig;
+    private RoomServiceConfig roomServiceConfig;
 
     @GetMapping("properties")
     public String getPropertyDetails() throws JsonProcessingException {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        Properties properties = new Properties(moviesServiceConfig.getMsg(), moviesServiceConfig.getBuildVersion(),
-                moviesServiceConfig.getMailDetails(), moviesServiceConfig.getActiveBranches());
+        Properties properties = new Properties(roomServiceConfig.getMsg(), roomServiceConfig.getBuildVersion(),
+                roomServiceConfig.getMailDetails(), roomServiceConfig.getActiveBranches());
         return ow.writeValueAsString(properties);
     }
 
@@ -56,7 +56,7 @@ public class RoomController {
 
     @Transactional
     @DeleteMapping("delete")
-    public String deleteRoom(@RequestParam int roomNumber) {
+    public String deleteRoom(@RequestParam Integer roomNumber) {
         List<Seat> seats = roomService.getSeatsByRoomNumber(roomNumber);
         roomService.removeSeats(seats);
         roomService.removeRoomByRoomNumber(roomNumber);
@@ -65,7 +65,7 @@ public class RoomController {
     }
 
     @GetMapping("getSeatsFromRoom")
-    public List<SeatResponse> getSeatsFromRoom(@RequestParam int roomNumber) {
+    public List<SeatResponse> getSeatsFromRoom(@RequestParam Integer roomNumber) {
         List<SeatResponse> seatResponses = new ArrayList<>();
         roomService.getSeatsFromRoom(roomNumber).forEach(seat -> seatResponses.add(new SeatResponse(seat)));
 

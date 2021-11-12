@@ -1,15 +1,17 @@
 package com.cinema.reservation.client.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class UpdateSeatRequest {
 
-    private int seatNumber;
+    private Integer seatNumber;
 
-    private boolean isBocked;
+    private Boolean isBocked;
 
-    private int roomNumber;
+    private Integer roomNumber;
 }

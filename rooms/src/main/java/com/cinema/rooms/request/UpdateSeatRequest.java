@@ -6,10 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateSeatRequest {
-
-    private int seatNumber;
-
-    private boolean isBocked;
-
-    private int roomNumber;
+    private Integer seatNumber;
+    private Boolean isBocked;
+    private Integer roomNumber;
 }

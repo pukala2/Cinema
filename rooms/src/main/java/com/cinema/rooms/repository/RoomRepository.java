@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    Long  removeByRoomNumber(int roomNumber);
-    Room getByRoomNumber(int roomNumber);
+    Long  removeByRoomNumber(Integer roomNumber);
+    Room getByRoomNumber(Integer roomNumber);
 }

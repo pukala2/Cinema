@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SeatRequest {
-    private int roomNumber;
-    private int seatsNumber;
+public class DeleteReservationRequest {
+    private String reservationCode;
 }
