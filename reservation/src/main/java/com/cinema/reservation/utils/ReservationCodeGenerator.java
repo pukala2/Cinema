@@ -5,8 +5,7 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationCodeGenerator implements CodeGenerator{
-    @Override
+public class ReservationCodeGenerator {
     public String generateCode() {
         RandomStringGenerator randomStringGenerator =
                 new RandomStringGenerator.Builder()

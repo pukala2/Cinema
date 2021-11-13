@@ -3,8 +3,7 @@ package com.cinema.reservation.controller;
 import com.cinema.reservation.request.DeleteReservationRequest;
 import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.response.ReservationResponse;
-import com.cinema.reservation.service.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cinema.reservation.service.ClientReservationService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,21 +13,24 @@ import java.util.List;
 @RequestMapping("reservation/")
 public class ReservationController {
 
-    @Autowired
-    private ReservationService reservationService;
+    private final ClientReservationService clientReservationService;
+
+    public ReservationController(ClientReservationService clientReservationService) {
+        this.clientReservationService = clientReservationService;
+    }
 
     @GetMapping("getAll")
     public List<ReservationResponse> getAll() {
-        return reservationService.getAll();
+        return clientReservationService.getAllReservation();
     }
 
     @PostMapping("reserve")
     public List<ReservationResponse> reserve(@Valid @RequestBody CreateReservationRequest createReservationRequest) {
-        return reservationService.reserve(createReservationRequest);
+        return clientReservationService.reserve(createReservationRequest);
     }
 
     @DeleteMapping("cancelReservation")
-    public ReservationResponse cancelReservation(@RequestBody DeleteReservationRequest reservationRequest) {
-        return reservationService.cancelReservation(reservationRequest);
+    public ReservationResponse cancel(@RequestBody DeleteReservationRequest reservationRequest) {
+        return clientReservationService.cancelReservation(reservationRequest);
     }
 }

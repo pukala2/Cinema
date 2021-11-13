@@ -1,23 +1,16 @@
 package com.cinema.reservation.service;
 
 import com.cinema.reservation.client.model.SeatResponse;
-import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.request.CreateSeatRequest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
 
     @InjectMocks
-    private ReservationService sut;
+    private ClientReservationService sut;
 
     private SeatResponse createSeatResponse(Integer roomNumber, Integer seatNumber, Boolean isBocked) {
         SeatResponse seatResponse = new SeatResponse();
@@ -33,6 +26,10 @@ class ReservationServiceTest {
         createSeatRequest.setSeatNumber(seatsNumber);
         return createSeatRequest;
     }
+    /*
+        reserve
+        cancelReservation
+     */
 
 //    @Test
 //    void shouldReturnNullWhenEmptySeatsFromRoomy() {

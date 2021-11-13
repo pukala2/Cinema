@@ -6,15 +6,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZonedDateTime;
 
-
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = ApiRequestException.class)
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException e) {
+    @ExceptionHandler({NotExistingReservationCodeException.class, BockedSeatException.class})
+    public ResponseEntity<ApiException> handleApiRequestException(NotExistingReservationCodeException e) {
         final ApiException exception = new ApiException(
                 e.getMessage(),
-                e,
+                e.getHttpStatus(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(exception, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(value = BockedSeatException.class)
+    public ResponseEntity<ApiException> handleApiRequestException(BockedSeatException e) {
+        final ApiException exception = new ApiException(
+                e.getMessage(),
                 e.getHttpStatus(),
                 ZonedDateTime.now()
         );
