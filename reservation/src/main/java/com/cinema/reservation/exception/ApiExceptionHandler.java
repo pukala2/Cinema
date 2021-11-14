@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler({NotExistingReservationCodeException.class, BockedSeatException.class})
+    @ExceptionHandler({NotExistingReservationCodeException.class})
     public ResponseEntity<ApiException> handleApiRequestException(NotExistingReservationCodeException e) {
         final ApiException exception = new ApiException(
                 e.getMessage(),

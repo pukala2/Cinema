@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SeatsFinder {
+public class SeatsHelper {
 
     static public List<SeatResponse> getSeatsForReservationFromRoom(List<SeatResponse> seatsFromRoom,
                                                               CreateReservationRequest createReservationRequest) {

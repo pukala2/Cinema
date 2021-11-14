@@ -9,7 +9,7 @@ import com.cinema.reservation.request.DeleteReservationRequest;
 import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.response.ReservationResponse;
 import com.cinema.reservation.utils.ReservationCodeGenerator;
-import com.cinema.reservation.utils.SeatsFinder;
+import com.cinema.reservation.utils.SeatsHelper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,7 +39,7 @@ public class ClientReservationService {
 
         final int roomNumber = createReservationRequest.getCreateSeatRequests().get(0).getRoomNumber();
         List<SeatResponse> seatsFromRoom = roomsFeignClient.getSeatsFromRoom(roomNumber);
-        List<SeatResponse> seatsForReservation = SeatsFinder.getSeatsForReservationFromRoom(seatsFromRoom,
+        List<SeatResponse> seatsForReservation = SeatsHelper.getSeatsForReservationFromRoom(seatsFromRoom,
                 createReservationRequest);
         List<ReservationResponse> reservationResponses = reservationService.save(createReservationRequest, seatsForReservation);
 
