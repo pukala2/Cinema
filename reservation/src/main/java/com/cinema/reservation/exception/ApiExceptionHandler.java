@@ -19,8 +19,18 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(exception, e.getHttpStatus());
     }
 
-    @ExceptionHandler(value = BockedSeatException.class)
-    public ResponseEntity<ApiException> handleApiRequestException(BockedSeatException e) {
+    @ExceptionHandler(value = BookedSeatException.class)
+    public ResponseEntity<ApiException> handleApiRequestException(BookedSeatException e) {
+        final ApiException exception = new ApiException(
+                e.getMessage(),
+                e.getHttpStatus(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(exception, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(value = SeatsNotMatchException.class)
+    public ResponseEntity<ApiException> handleApiRequestException(SeatsNotMatchException e) {
         final ApiException exception = new ApiException(
                 e.getMessage(),
                 e.getHttpStatus(),

@@ -1,7 +1,8 @@
 package com.cinema.reservation.utils;
 
 import com.cinema.reservation.client.model.SeatResponse;
-import com.cinema.reservation.exception.BockedSeatException;
+import com.cinema.reservation.exception.BookedSeatException;
+import com.cinema.reservation.exception.SeatsNotMatchException;
 import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.request.CreateSeatRequest;
 
@@ -17,7 +18,7 @@ public class SeatsHelper {
                 createReservationRequest.getCreateSeatRequests());
 
         if (seatsForReservation.stream().anyMatch(SeatResponse::getIsBocked)) {
-            throw new BockedSeatException();
+            throw new BookedSeatException();
         }
         seatsForReservation.forEach(seatResponseRes -> seatResponseRes.setIsBocked(true));
         return seatsForReservation;
@@ -29,6 +30,9 @@ public class SeatsHelper {
             if (Objects.equals(seatResponseRes.getSeatNumber(), seatReq.getSeatNumber())) {
                 seatsForReservation.add(seatResponseRes);
             }}));
+        if (seatsForReservation.isEmpty() || seatsForReservation.size() != seatsRequest.size()) {
+            throw new SeatsNotMatchException();
+        }
         return seatsForReservation;
     }
 }

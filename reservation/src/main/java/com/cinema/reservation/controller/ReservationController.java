@@ -2,6 +2,7 @@ package com.cinema.reservation.controller;
 
 import com.cinema.reservation.request.DeleteReservationRequest;
 import com.cinema.reservation.request.CreateReservationRequest;
+import com.cinema.reservation.response.ClientResponse;
 import com.cinema.reservation.response.ReservationResponse;
 import com.cinema.reservation.service.ClientReservationService;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,11 @@ public class ReservationController {
     @GetMapping("getAll")
     public List<ReservationResponse> getAll() {
         return clientReservationService.getAllReservation();
+    }
+
+    @GetMapping("getClients")
+    public List<ClientResponse> getAllClients() {
+        return clientReservationService.getAllClients();
     }
 
     @PostMapping("reserve")

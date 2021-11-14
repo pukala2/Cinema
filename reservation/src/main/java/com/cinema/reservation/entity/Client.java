@@ -1,10 +1,12 @@
 package com.cinema.reservation.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,7 +31,6 @@ public class Client{
     @Column(name = "is_paid")
     private boolean isPaid;
 
-    @OneToOne
-    @JoinColumn(name = "reservation_id")
-    private Reservation reservation;
+    @OneToMany(mappedBy = "client")
+    private List<Reservation> reservation;
 }

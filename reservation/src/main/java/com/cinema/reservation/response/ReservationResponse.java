@@ -3,10 +3,12 @@ package com.cinema.reservation.response;
 import com.cinema.reservation.entity.Reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ReservationResponse {
 
     @JsonIgnore

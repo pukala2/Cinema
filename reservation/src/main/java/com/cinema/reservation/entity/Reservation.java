@@ -29,6 +29,7 @@ public class Reservation {
     @Column(name = "reservation_code")
     private String reservationCode;
 
-    @OneToOne(mappedBy = "reservation")
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     Client client;
 }

@@ -1,6 +1,7 @@
 package com.cinema.reservation.request;
 
 import com.cinema.reservation.entity.Client;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class CreateReservationRequest {
 
     @NotEmpty(message = "Seat requests can not be empty")
@@ -21,14 +23,4 @@ public class CreateReservationRequest {
 
     @NotNull(message = "Client can not be empty")
     private Client client;
-
-    public Client getClient() {
-        Client client = new Client();
-        client.setReservation(this.client.getReservation());
-        client.setEmail(this.client.getEmail());
-        client.setName(this.client.getName());
-        client.setSurname(this.client.getSurname());
-        client.setPaid(this.client.isPaid());
-        return client;
-    }
 }
