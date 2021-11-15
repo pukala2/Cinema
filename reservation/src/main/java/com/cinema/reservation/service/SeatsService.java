@@ -1,6 +1,7 @@
 package com.cinema.reservation.service;
 
 import com.cinema.reservation.client.RoomsFeignClient;
+import com.cinema.reservation.client.model.Room;
 import com.cinema.reservation.client.model.SeatResponse;
 import com.cinema.reservation.client.model.UpdateSeatRequest;
 import com.cinema.reservation.request.CreateReservationRequest;
@@ -19,11 +20,10 @@ public class SeatsService {
     }
 
     List<SeatResponse> getSeatsForReservation(CreateReservationRequest createReservationRequest) {
-
         final int roomNumber = createReservationRequest.getCreateSeatRequests().get(0).getRoomNumber();
-        List<SeatResponse> seatsFromRoom = roomsFeignClient.getSeatsFromRoom(roomNumber);
+        Room room = roomsFeignClient.getRoomByRoomNumber(roomNumber);
 
-        return SeatsHelper.getSeatsForReservationFromRoom(seatsFromRoom,
+        return SeatsHelper.getSeatsForReservationFromRoom(room.getSeats(),
                 createReservationRequest);
     }
 
@@ -38,6 +38,13 @@ public class SeatsService {
     }
 
     ReservationResponse changeSeatStatus(ReservationResponse reservationResponse) {
-        return new ReservationResponse();
+
+        UpdateSeatRequest updateSeatRequest = UpdateSeatRequest.builder()
+                .seatNumber(reservationResponse.getSeatNumber())
+                .roomNumber(reservationResponse.getRoomNumber())
+                .isBocked(false)
+                .build();
+        roomsFeignClient.changeSeatReservation(updateSeatRequest);
+        return reservationResponse;
     }
 }

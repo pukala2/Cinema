@@ -25,62 +25,62 @@ class RoomServiceTest {
     @Mock
     SeatRepository seatRepository;
 
-    @Test
-    void shouldCreateRoom() {
+//    @Test
+//    void shouldCreateRoom() {
+//
+//        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
+//        createRoomRequest.setRoomNumber(1);
+//        createRoomRequest.setSeatsNumber(5);
+//
+//        Room result = sut.createRoom(createRoomRequest);
+//
+//        Assertions.assertEquals(1, result.getRoomNumber());
+//        Assertions.assertEquals(5, result.getSeatsNumber());
+//        Assertions.assertEquals(5, result.getSeats().size());
+//    }
 
-        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
-        createRoomRequest.setRoomNumber(1);
-        createRoomRequest.setSeatsNumber(5);
+//    @Test
+//    void shouldChangeSeatReservation() {
+//
+//        UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
+//        updateSeatRequest.setRoomNumber(1);
+//        updateSeatRequest.setIsBocked(true);
+//        updateSeatRequest.setSeatNumber(1);
+//
+//        Seat seat = new Seat();
+//        seat.setIsBocked(false);
+//        seat.setSeatNumber(1);
+//        seat.setRoomNumber(1);
+//
+//        Mockito.when(seatRepository.getByRoomNumber(updateSeatRequest.getRoomNumber())).
+//                thenReturn(List.of(seat));
+//        Optional<Seat> result = sut.changeSeatReservation(updateSeatRequest);
+//
+//        Assertions.assertFalse(result.isEmpty());
+//        Assertions.assertEquals(1, result.get().getRoomNumber());
+//        Assertions.assertTrue(result.get().getIsBocked());
+//        Assertions.assertEquals(1, result.get().getSeatNumber());
+//    }
 
-        Room result = sut.createRoom(createRoomRequest);
-
-        Assertions.assertEquals(1, result.getRoomNumber());
-        Assertions.assertEquals(5, result.getSeatsNumber());
-        Assertions.assertEquals(5, result.getSeats().size());
-    }
-
-    @Test
-    void shouldChangeSeatReservation() {
-
-        UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
-        updateSeatRequest.setRoomNumber(1);
-        updateSeatRequest.setIsBocked(true);
-        updateSeatRequest.setSeatNumber(1);
-
-        Seat seat = new Seat();
-        seat.setIsBocked(false);
-        seat.setSeatNumber(1);
-        seat.setRoomNumber(1);
-
-        Mockito.when(seatRepository.getByRoomNumber(updateSeatRequest.getRoomNumber())).
-                thenReturn(List.of(seat));
-        Optional<Seat> result = sut.changeSeatReservation(updateSeatRequest);
-
-        Assertions.assertFalse(result.isEmpty());
-        Assertions.assertEquals(1, result.get().getRoomNumber());
-        Assertions.assertTrue(result.get().getIsBocked());
-        Assertions.assertEquals(1, result.get().getSeatNumber());
-    }
-
-    @Test
-    void shouldNotChangeSeatReservationSeatNumberNotMatch() {
-
-        UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
-        updateSeatRequest.setRoomNumber(1);
-        updateSeatRequest.setIsBocked(true);
-        updateSeatRequest.setSeatNumber(1);
-
-        Seat seat = new Seat();
-        seat.setIsBocked(false);
-        seat.setSeatNumber(2);
-        seat.setRoomNumber(1);
-
-        Mockito.when(seatRepository.getByRoomNumber(updateSeatRequest.getRoomNumber())).
-                thenReturn(List.of(seat));
-        Optional<Seat> result = sut.changeSeatReservation(updateSeatRequest);
-
-        Assertions.assertTrue(result.isEmpty());
-    }
+//    @Test
+//    void shouldNotChangeSeatReservationSeatNumberNotMatch() {
+//
+//        UpdateSeatRequest updateSeatRequest = new UpdateSeatRequest();
+//        updateSeatRequest.setRoomNumber(1);
+//        updateSeatRequest.setIsBocked(true);
+//        updateSeatRequest.setSeatNumber(1);
+//
+//        Seat seat = new Seat();
+//        seat.setIsBocked(false);
+//        seat.setSeatNumber(2);
+//        seat.setRoomNumber(1);
+//
+//        Mockito.when(seatRepository.getByRoomNumber(updateSeatRequest.getRoomNumber())).
+//                thenReturn(List.of(seat));
+//        Optional<Seat> result = sut.changeSeatReservation(updateSeatRequest);
+//
+//        Assertions.assertTrue(result.isEmpty());
+//    }
 
 
 }

@@ -1,14 +1,13 @@
 package com.cinema.reservation.service;
 
 import com.cinema.reservation.client.RoomsFeignClient;
+import com.cinema.reservation.client.model.Room;
 import com.cinema.reservation.client.model.SeatResponse;
 import com.cinema.reservation.entity.Client;
 import com.cinema.reservation.exception.BookedSeatException;
 import com.cinema.reservation.exception.SeatsNotMatchException;
 import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.request.CreateSeatRequest;
-import com.cinema.reservation.response.ClientResponse;
-import com.cinema.reservation.response.ReservationResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,8 +29,8 @@ class SeatsServiceTest {
     @Mock
     RoomsFeignClient roomsFeignClient;
 
-    private static int ROOM_NUMBER = 1;
-    private static String MOVIE_TITLE = "Matrix";
+    private static final int ROOM_NUMBER = 1;
+    private static final String MOVIE_TITLE = "Matrix";
 
     private SeatResponse createSeatResponse(Integer roomNumber, Integer seatNumber, Boolean isBocked) {
         SeatResponse seatResponse = new SeatResponse();
@@ -67,7 +66,9 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Mockito.when(roomsFeignClient.getSeatsFromRoom(ROOM_NUMBER)).thenReturn(seatsFromRoom);
+        Room room = new Room();
+        room.setSeats(seatsFromRoom);
+        Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         SeatsNotMatchException thrown = Assertions.assertThrows(SeatsNotMatchException.class, () -> {
             sut.getSeatsForReservation(createReservationRequest);
@@ -95,7 +96,9 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Mockito.when(roomsFeignClient.getSeatsFromRoom(ROOM_NUMBER)).thenReturn(seatsFromRoom);
+        Room room = new Room();
+        room.setSeats(seatsFromRoom);
+        Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         BookedSeatException thrown = Assertions.assertThrows(BookedSeatException.class, () -> {
             sut.getSeatsForReservation(createReservationRequest);
@@ -123,7 +126,9 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Mockito.when(roomsFeignClient.getSeatsFromRoom(ROOM_NUMBER)).thenReturn(seatsFromRoom);
+        Room room = new Room();
+        room.setSeats(seatsFromRoom);
+        Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         List<SeatResponse> result = sut.getSeatsForReservation(createReservationRequest);
         List<SeatResponse> expected = Arrays.asList(

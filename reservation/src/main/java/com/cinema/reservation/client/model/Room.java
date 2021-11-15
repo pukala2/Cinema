@@ -14,5 +14,5 @@ import java.util.List;
 public class Room {
     private Integer roomNumber;
     private Integer seatsNumber;
-    List<SeatResponse> seatResponseRespons;
+    List<SeatResponse> seats;
 }
