@@ -54,7 +54,7 @@ class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        var rooms = Arrays.asList(objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Room[].class));
+            var rooms = Arrays.asList(objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Room[].class));
 
         Assertions.assertEquals(1, rooms.size());
         Assertions.assertEquals(4, rooms.get(0).getSeats().size());

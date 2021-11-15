@@ -1,9 +1,6 @@
 package com.cinema.reservation.client.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Builder
 public class Room {
     private Integer roomNumber;
     private Integer seatsNumber;

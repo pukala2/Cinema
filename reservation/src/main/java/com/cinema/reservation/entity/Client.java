@@ -1,9 +1,6 @@
 package com.cinema.reservation.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Client{
+@Builder
+@AllArgsConstructor
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

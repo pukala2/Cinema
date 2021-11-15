@@ -33,11 +33,7 @@ class SeatsServiceTest {
     private static final String MOVIE_TITLE = "Matrix";
 
     private SeatResponse createSeatResponse(Integer roomNumber, Integer seatNumber, Boolean isBocked) {
-        SeatResponse seatResponse = new SeatResponse();
-        seatResponse.setIsBocked(isBocked);
-        seatResponse.setSeatNumber(seatNumber);
-        seatResponse.setRoomNumber(roomNumber);
-        return seatResponse;
+        return SeatResponse.builder().isBocked(isBocked).seatNumber(seatNumber).roomNumber(roomNumber).build();
     }
 
     private Client createClient() {
@@ -66,8 +62,7 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Room room = new Room();
-        room.setSeats(seatsFromRoom);
+        Room room = Room.builder().seats(seatsFromRoom).build();
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         SeatsNotMatchException thrown = Assertions.assertThrows(SeatsNotMatchException.class, () -> {
@@ -96,8 +91,7 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Room room = new Room();
-        room.setSeats(seatsFromRoom);
+        Room room = Room.builder().seats(seatsFromRoom).build();
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         BookedSeatException thrown = Assertions.assertThrows(BookedSeatException.class, () -> {
@@ -126,8 +120,7 @@ class SeatsServiceTest {
                 .client(client)
                 .build();
 
-        Room room = new Room();
-        room.setSeats(seatsFromRoom);
+        Room room = Room.builder().seats(seatsFromRoom).build();
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(ROOM_NUMBER)).thenReturn(room);
 
         List<SeatResponse> result = sut.getSeatsForReservation(createReservationRequest);
