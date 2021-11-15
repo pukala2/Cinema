@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rooms/")
 public class RoomController {
 
     final private RoomService roomService;
@@ -26,33 +25,33 @@ public class RoomController {
         this.roomServiceConfig = roomServiceConfig;
     }
 
-    @GetMapping("properties")
+    @GetMapping("/rooms/properties")
     public String getPropertyDetails() throws JsonProcessingException {
         return roomServiceConfig.getPropertyDetails();
     }
 
-    @GetMapping("getAll")
-    public List<RoomResponse> getAll() {
-        return roomService.getAll();
+    @GetMapping("/rooms/getAll")
+    public ResponseEntity<List<RoomResponse>> getAll() {
+        return new  ResponseEntity<>(roomService.getAll(), HttpStatus.OK);
     }
 
-    @PostMapping("create")
+    @PostMapping("/rooms/create")
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody CreateRoomRequest createRoomRequest) {
         return new ResponseEntity<>(roomService.createRoom(createRoomRequest), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("/rooms/delete")
     public void deleteRoom(@RequestParam Integer roomNumber) {
         roomService.deleteRoom(roomNumber);
     }
 
-    @GetMapping("getRoomByRoomNumber")
-    public RoomResponse getRoomByRoomNumber(Integer roomNumber) {
-        return roomService.getRoomByRoomNumber(roomNumber);
+    @GetMapping("/rooms/getRoomByRoomNumber")
+    public ResponseEntity<RoomResponse> getRoomByRoomNumber(Integer roomNumber) {
+        return new ResponseEntity<>(roomService.getRoomByRoomNumber(roomNumber), HttpStatus.OK);
     }
 
-    @PutMapping("changeSeatReservation")
-    public SeatResponse changeSeatReservation(@RequestBody UpdateSeatRequest updateSeatRequest) {
-        return roomService.changeSeatStatus(updateSeatRequest);
+    @PutMapping("/rooms/changeSeatReservation")
+    public ResponseEntity<SeatResponse> changeSeatReservation(@RequestBody UpdateSeatRequest updateSeatRequest) {
+        return new ResponseEntity<>(roomService.changeSeatStatus(updateSeatRequest), HttpStatus.OK);
     }
 }
