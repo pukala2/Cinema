@@ -1,17 +1,19 @@
 package com.cinema.rooms.entity;
 
 import com.cinema.rooms.request.CreateRoomRequest;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Room {
 
     @Id

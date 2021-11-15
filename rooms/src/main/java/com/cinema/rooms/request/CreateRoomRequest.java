@@ -1,14 +1,17 @@
 package com.cinema.rooms.request;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@Builder
 public class CreateRoomRequest {
+
+    @NotNull
     private Integer roomNumber;
     private Integer seatsNumber;
-    private List<CreateSeatRequest> seats;
 }

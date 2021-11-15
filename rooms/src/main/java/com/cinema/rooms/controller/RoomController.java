@@ -7,21 +7,24 @@ import com.cinema.rooms.response.RoomResponse;
 import com.cinema.rooms.response.SeatResponse;
 import com.cinema.rooms.service.RoomService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("rooms/")
+@RequestMapping("/rooms/")
 public class RoomController {
 
-    @Autowired
-    private RoomService roomService;
+    final private RoomService roomService;
+    final private RoomServiceConfig roomServiceConfig;
 
-    @Autowired
-    private RoomServiceConfig roomServiceConfig;
+    public RoomController(RoomService roomService, RoomServiceConfig roomServiceConfig) {
+        this.roomService = roomService;
+        this.roomServiceConfig = roomServiceConfig;
+    }
 
     @GetMapping("properties")
     public String getPropertyDetails() throws JsonProcessingException {
@@ -34,8 +37,8 @@ public class RoomController {
     }
 
     @PostMapping("create")
-    public RoomResponse createRoom(@Valid @RequestBody CreateRoomRequest createRoomRequest) {
-        return roomService.createRoom(createRoomRequest);
+    public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody CreateRoomRequest createRoomRequest) {
+        return new ResponseEntity<>(roomService.createRoom(createRoomRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("delete")
