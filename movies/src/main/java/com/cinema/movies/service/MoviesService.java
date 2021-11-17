@@ -1,44 +1,47 @@
 package com.cinema.movies.service;
 
 import com.cinema.movies.entity.Movie;
+import com.cinema.movies.exception.NotExistingMovieException;
 import com.cinema.movies.repository.MoviesRepository;
 import com.cinema.movies.request.CreateMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cinema.movies.response.MovieResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MoviesService {
 
-    @Autowired
-    private MoviesRepository moviesRepository;
+    final private MoviesRepository moviesRepository;
 
-    public List<Movie> getAllMovies() {
-        return moviesRepository.findAll();
+    public MoviesService(MoviesRepository moviesRepository) {
+        this.moviesRepository = moviesRepository;
     }
 
-    public Movie addMovie(final CreateMovieRequest createMovieRequest) {
-
-        Movie movie = new Movie();
-        movie.setTitle(createMovieRequest.getTitle());
-        movie.setCategory(createMovieRequest.getCategory());
-
-        return moviesRepository.save(movie);
+    public List<MovieResponse> getAllMovies() {
+        List<MovieResponse> movieResponses = new ArrayList<>();
+        moviesRepository.findAll().forEach(movie -> movieResponses.add(new MovieResponse(movie)));
+        return movieResponses;
     }
 
-    public Optional<Movie> findById(long id) {
-        return moviesRepository.findById(id);
+    public MovieResponse updateMovie(UpdateMovieRequest updateMovieRequest) {
+        Optional<Movie> movie = moviesRepository.findById(updateMovieRequest.getId());
+        if (movie.isEmpty()) {
+            throw new NotExistingMovieException();
+        }
+        updateMovie(updateMovieRequest, movie.get());
+        return addMovie(movie.get());
     }
 
-    public Movie saveMovie(Movie movie) {
-        return moviesRepository.save(movie);
+    public MovieResponse addMovie(Movie movie) {
+        moviesRepository.save(movie);
+        return new MovieResponse(moviesRepository.save(movie));
     }
 
-    public void updateMovie(final UpdateMovieRequest updateMovieRequest, Movie movie) {
-
+    private void updateMovie(final UpdateMovieRequest updateMovieRequest, Movie movie) {
         if (updateMovieRequest.getTitle() != null && !updateMovieRequest.getTitle().isEmpty()) {
             movie.setTitle(updateMovieRequest.getTitle());
         }
@@ -47,8 +50,22 @@ public class MoviesService {
         }
     }
 
-    public String deleteMovie(long id) {
+    public MovieResponse addMovie(final CreateMovieRequest createMovieRequest) {
+        return new MovieResponse(moviesRepository.save(Movie.builder()
+                .category(createMovieRequest.getCategory())
+                .title(createMovieRequest.getTitle()).build()));
+    }
+
+    public void deleteMovie(Long id) {
         moviesRepository.deleteById(id);
-        return "Movie has been deleted successfully";
+    }
+
+    public MovieResponse findByTitle(String title) {
+
+        Movie movie = moviesRepository.findByTitle(title);
+        if (movie == null) {
+            throw new NotExistingMovieException();
+        }
+        return new MovieResponse(movie);
     }
 }

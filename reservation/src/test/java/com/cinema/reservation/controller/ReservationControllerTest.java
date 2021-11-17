@@ -1,8 +1,8 @@
 package com.cinema.reservation.controller;
 
+import com.cinema.reservation.client.MoviesFeignClient;
 import com.cinema.reservation.client.RoomsFeignClient;
-import com.cinema.reservation.client.model.Room;
-import com.cinema.reservation.client.model.SeatResponse;
+import com.cinema.reservation.client.model.*;
 import com.cinema.reservation.entity.Client;
 import com.cinema.reservation.repository.ClientRepository;
 import com.cinema.reservation.repository.ReservationRepository;
@@ -40,6 +40,9 @@ class ReservationControllerTest {
 
     @MockBean
     private RoomsFeignClient roomsFeignClient;
+
+    @MockBean
+    private MoviesFeignClient moviesFeignClient;
 
     @MockBean
     private ReservationCodeGenerator reservationCodeGenerator;
@@ -88,6 +91,7 @@ class ReservationControllerTest {
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(1)).thenReturn(createRoomWithThreeSeats(1));
         Mockito.when(roomsFeignClient.changeSeatReservation(any())).thenReturn(null);
         Mockito.when(reservationCodeGenerator.generateCode()).thenReturn(RESERVATION_CODE_A).thenReturn(RESERVATION_CODE_B);
+        Mockito.when(moviesFeignClient.getByTitle(new FindMovieRequest(MOVIE_TITLE))).thenReturn(new MovieResponse());
 
         mockMvc.perform(post("/reservation/reserve")
                 .content(objectMapper.writeValueAsBytes(CreateReservationRequest.builder()
@@ -124,6 +128,8 @@ class ReservationControllerTest {
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(1)).thenReturn(createRoomWithThreeSeats(1));
         Mockito.when(roomsFeignClient.changeSeatReservation(any())).thenReturn(null);
         Mockito.when(reservationCodeGenerator.generateCode()).thenReturn(RESERVATION_CODE_A).thenReturn(RESERVATION_CODE_B);
+        Mockito.when(moviesFeignClient.getByTitle(new FindMovieRequest(MOVIE_TITLE)))
+                .thenReturn(new MovieResponse()).thenReturn(new MovieResponse());
 
         mockMvc.perform(post("/reservation/reserve")
                         .content(objectMapper.writeValueAsBytes(CreateReservationRequest.builder()
@@ -163,6 +169,7 @@ class ReservationControllerTest {
         Mockito.when(roomsFeignClient.getRoomByRoomNumber(1)).thenReturn(createRoomWithThreeSeats(1));
         Mockito.when(roomsFeignClient.changeSeatReservation(any())).thenReturn(null);
         Mockito.when(reservationCodeGenerator.generateCode()).thenReturn(RESERVATION_CODE_A).thenReturn(RESERVATION_CODE_B);
+        Mockito.when(moviesFeignClient.getByTitle(new FindMovieRequest(MOVIE_TITLE))).thenReturn(new MovieResponse());
 
         mockMvc.perform(post("/reservation/reserve")
                         .content(objectMapper.writeValueAsBytes(CreateReservationRequest.builder()

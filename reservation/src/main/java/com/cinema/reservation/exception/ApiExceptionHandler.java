@@ -38,4 +38,14 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(exception, e.getHttpStatus());
     }
+
+    @ExceptionHandler(value = NotExistingMovieException.class)
+    public ResponseEntity<ApiException> handleApiRequestException(NotExistingMovieException e) {
+        final ApiException exception = new ApiException(
+                e.getMessage(),
+                e.getHttpStatus(),
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(exception, e.getHttpStatus());
+    }
 }

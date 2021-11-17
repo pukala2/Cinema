@@ -1,8 +1,12 @@
 package com.cinema.reservation.service;
 
+import com.cinema.reservation.client.MoviesFeignClient;
+import com.cinema.reservation.client.model.FindMovieRequest;
+import com.cinema.reservation.client.model.MovieResponse;
 import com.cinema.reservation.client.model.SeatResponse;
 import com.cinema.reservation.entity.Client;
 import com.cinema.reservation.entity.Reservation;
+import com.cinema.reservation.exception.NotExistingMovieException;
 import com.cinema.reservation.exception.NotExistingReservationCodeException;
 import com.cinema.reservation.repository.ClientRepository;
 import com.cinema.reservation.repository.ReservationRepository;
@@ -23,11 +27,13 @@ class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationCodeGenerator reservationCodeGenerator;
     private final ClientRepository clientRepository;
+    private final MoviesFeignClient moviesFeignClient;
 
-    ReservationService(ReservationRepository reservationRepository, ReservationCodeGenerator reservationCodeGenerator, ClientRepository clientRepository) {
+    ReservationService(ReservationRepository reservationRepository, ReservationCodeGenerator reservationCodeGenerator, ClientRepository clientRepository, MoviesFeignClient moviesFeignClient) {
         this.reservationRepository = reservationRepository;
         this.reservationCodeGenerator = reservationCodeGenerator;
         this.clientRepository = clientRepository;
+        this.moviesFeignClient = moviesFeignClient;
     }
 
     List<ReservationResponse> getReservations() {
@@ -55,11 +61,22 @@ class ReservationService {
 
     List<ReservationResponse> save(CreateReservationRequest createReservationRequest, List<SeatResponse> seatsForReservation) {
         List<ReservationResponse> reservationResponses = new ArrayList<>();
+
+        checkTitle(new FindMovieRequest(createReservationRequest.getMovieTitle()));
+
         List<Reservation> reservations = saveReservation(createReservationRequest, seatsForReservation);
         reservations.forEach(reservation -> {
             reservationResponses.add(new ReservationResponse(reservation));
         });
         return reservationResponses;
+    }
+
+    private void checkTitle(FindMovieRequest findMovieRequest) {
+        MovieResponse movie = moviesFeignClient.getByTitle(findMovieRequest);
+
+        if (movie == null) {
+            throw new NotExistingMovieException();
+        }
     }
 
     private List<Reservation> saveReservation(CreateReservationRequest createReservationRequest, List<SeatResponse> seatsForReservation) {

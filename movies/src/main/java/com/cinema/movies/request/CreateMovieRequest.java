@@ -1,12 +1,14 @@
 package com.cinema.movies.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateMovieRequest {
 
     @NotBlank(message = "title is required")

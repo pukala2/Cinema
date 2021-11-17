@@ -1,4 +1,4 @@
-package com.cinema.movies.entity;
+package com.cinema.reservation.client.model;
 
 import lombok.*;
 

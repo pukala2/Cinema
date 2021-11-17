@@ -4,9 +4,7 @@ import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.repository.RoomRepository;
 import com.cinema.rooms.repository.SeatRepository;
 import com.cinema.rooms.request.CreateRoomRequest;
-import com.cinema.rooms.response.RoomResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,7 +79,7 @@ class RoomControllerTest {
                 .andExpect(status().isCreated());
 
         mockMvc.perform(delete("/rooms/delete?roomNumber=1")
-                .content("application/json"))
+                .contentType("application/json"))
                 .andExpect(status().isOk());
 
         MvcResult mvcResult = mockMvc.perform(get("/rooms/getAll"))

@@ -1,71 +1,57 @@
 package com.cinema.movies.controller;
 
 import com.cinema.movies.config.MoviesServiceConfig;
-import com.cinema.movies.config.Properties;
-import com.cinema.movies.entity.Movie;
 import com.cinema.movies.request.CreateMovieRequest;
+import com.cinema.movies.request.FindMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
 import com.cinema.movies.response.MovieResponse;
 import com.cinema.movies.service.MoviesService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("movies/")
 public class MoviesController {
 
-    @Autowired
-    private MoviesService moviesService;
+    final private MoviesService moviesService;
+    final private MoviesServiceConfig moviesServiceConfig;
 
-    @Autowired
-    private MoviesServiceConfig moviesServiceConfig;
+    public MoviesController(MoviesService moviesService, MoviesServiceConfig moviesServiceConfig) {
+        this.moviesService = moviesService;
+        this.moviesServiceConfig = moviesServiceConfig;
+    }
 
-    @GetMapping("properties")
+    @GetMapping("/movies/properties")
     public String getPropertyDetails() throws JsonProcessingException {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        Properties properties = new Properties(moviesServiceConfig.getMsg(), moviesServiceConfig.getBuildVersion(),
-                moviesServiceConfig.getMailDetails(), moviesServiceConfig.getActiveBranches());
-        return ow.writeValueAsString(properties);
+        return moviesServiceConfig.getPropertyDetails();
     }
 
-    @GetMapping("getAll")
-    public List<MovieResponse> getAllMovies() {
-        List<MovieResponse> movieResponses = new ArrayList<>();
-        moviesService.getAllMovies().forEach(movie -> movieResponses.add(new MovieResponse(movie)));
-        return movieResponses;
+    @GetMapping("/movies/getAll")
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
+        return new ResponseEntity<>(moviesService.getAllMovies(), HttpStatus.OK);
     }
 
-    @PostMapping("addMovie")
-    public MovieResponse addMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
-
-        Movie movie = new Movie();
-        movie.setTitle(createMovieRequest.getTitle());
-        movie.setCategory(createMovieRequest.getCategory());
-
-        return new MovieResponse(moviesService.saveMovie(movie));
+    @PostMapping("/movies/addMovie")
+    public ResponseEntity<MovieResponse> addMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
+        return new ResponseEntity<>(moviesService.addMovie(createMovieRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("updateMovie")
-    public MovieResponse updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
-        Optional<Movie> movie = moviesService.findById(updateMovieRequest.getId());
-        if (movie.isEmpty()) {
-            return null;
-        }
-        moviesService.updateMovie(updateMovieRequest, movie.get());
-        moviesService.saveMovie(movie.get());
-        return new MovieResponse(movie.get());
+    @PutMapping("/movies/updateMovie")
+    public  ResponseEntity<MovieResponse> updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
+        return new  ResponseEntity<>(moviesService.updateMovie(updateMovieRequest), HttpStatus.OK);
     }
 
-    @DeleteMapping("deleteMovie")
-    public String deleteMovie(long id) {
-        return moviesService.deleteMovie(id);
+    @DeleteMapping("/movies/deleteMovie")
+    public void deleteMovie(Long id) {
+        moviesService.deleteMovie(id);
+    }
+
+    @GetMapping("/movies/getByTitle")
+    public ResponseEntity<MovieResponse> getByTitle(@Valid @RequestBody FindMovieRequest findMovieRequest) {
+        return new ResponseEntity<>(moviesService.findByTitle(findMovieRequest.getTitle()), HttpStatus.OK);
     }
 }

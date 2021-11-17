@@ -1,6 +1,5 @@
-package com.cinema.movies.response;
+package com.cinema.reservation.client.model;
 
-import com.cinema.movies.entity.Movie;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
