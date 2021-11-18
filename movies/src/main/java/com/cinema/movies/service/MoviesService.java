@@ -1,7 +1,6 @@
 package com.cinema.movies.service;
 
 import com.cinema.movies.entity.Movie;
-import com.cinema.movies.exception.NotExistingMovieException;
 import com.cinema.movies.repository.MoviesRepository;
 import com.cinema.movies.request.CreateMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
@@ -27,13 +26,11 @@ public class MoviesService {
         return movieResponses;
     }
 
-    public MovieResponse updateMovie(UpdateMovieRequest updateMovieRequest) {
-        Optional<Movie> movie = moviesRepository.findById(updateMovieRequest.getId());
-        if (movie.isEmpty()) {
-            throw new NotExistingMovieException();
-        }
-        updateMovie(updateMovieRequest, movie.get());
-        return addMovie(movie.get());
+    public Movie updateMovie(Movie movie, UpdateMovieRequest updateMovieRequest) {
+
+        movie.setTitle(updateMovieRequest.getTitle());
+        movie.setCategory(updateMovieRequest.getCategory());
+        return save(movie);
     }
 
     public MovieResponse addMovie(Movie movie) {
@@ -41,13 +38,8 @@ public class MoviesService {
         return new MovieResponse(moviesRepository.save(movie));
     }
 
-    private void updateMovie(final UpdateMovieRequest updateMovieRequest, Movie movie) {
-        if (updateMovieRequest.getTitle() != null && !updateMovieRequest.getTitle().isEmpty()) {
-            movie.setTitle(updateMovieRequest.getTitle());
-        }
-        if (updateMovieRequest.getCategory() != null && !updateMovieRequest.getCategory().isEmpty()) {
-            movie.setCategory(updateMovieRequest.getCategory());
-        }
+    public Movie save(Movie movie) {
+        return moviesRepository.save(movie);
     }
 
     public MovieResponse addMovie(final CreateMovieRequest createMovieRequest) {
@@ -56,16 +48,15 @@ public class MoviesService {
                 .title(createMovieRequest.getTitle()).build()));
     }
 
-    public void deleteMovie(Long id) {
-        moviesRepository.deleteById(id);
+    public void deleteMovie(Movie movie) {
+        moviesRepository.delete(movie);
     }
 
-    public MovieResponse findByTitle(String title) {
+    public Optional<MovieResponse> findByTitle(String title) {
+        return moviesRepository.findByTitle(title).map(MovieResponse::new);
+    }
 
-        Movie movie = moviesRepository.findByTitle(title);
-        if (movie == null) {
-            throw new NotExistingMovieException();
-        }
-        return new MovieResponse(movie);
+    public Optional<Movie> findById(Long id) {
+        return moviesRepository.findById(id);
     }
 }

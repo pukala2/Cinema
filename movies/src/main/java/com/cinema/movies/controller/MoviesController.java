@@ -1,12 +1,11 @@
 package com.cinema.movies.controller;
 
 import com.cinema.movies.config.MoviesServiceConfig;
+import com.cinema.movies.entity.Movie;
 import com.cinema.movies.request.CreateMovieRequest;
-import com.cinema.movies.request.FindMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
 import com.cinema.movies.response.MovieResponse;
 import com.cinema.movies.service.MoviesService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,44 +13,50 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+// wyjatek not found bez sensu, ma byc optional
+// jezeli jeden  param przekazuje path variable
+// wyjebac nazwy w oczywistych metodach restowych
+
+
+@RequestMapping("/movie")
 @RestController
 public class MoviesController {
 
     final private MoviesService moviesService;
-    final private MoviesServiceConfig moviesServiceConfig;
 
     public MoviesController(MoviesService moviesService, MoviesServiceConfig moviesServiceConfig) {
         this.moviesService = moviesService;
-        this.moviesServiceConfig = moviesServiceConfig;
     }
 
-    @GetMapping("/movies/properties")
-    public String getPropertyDetails() throws JsonProcessingException {
-        return moviesServiceConfig.getPropertyDetails();
-    }
-
-    @GetMapping("/movies/getAll")
+    @GetMapping()
     public ResponseEntity<List<MovieResponse>> getAllMovies() {
         return new ResponseEntity<>(moviesService.getAllMovies(), HttpStatus.OK);
     }
 
-    @PostMapping("/movies/addMovie")
+    @PostMapping()
     public ResponseEntity<MovieResponse> addMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
         return new ResponseEntity<>(moviesService.addMovie(createMovieRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("/movies/updateMovie")
-    public  ResponseEntity<MovieResponse> updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
-        return new  ResponseEntity<>(moviesService.updateMovie(updateMovieRequest), HttpStatus.OK);
+    @PutMapping()
+    public ResponseEntity<MovieResponse> updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
+        return moviesService.findById(updateMovieRequest.getId()).map(m -> {
+            moviesService.updateMovie(m, updateMovieRequest);
+            return new ResponseEntity<MovieResponse>(HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/movies/deleteMovie")
-    public void deleteMovie(Long id) {
-        moviesService.deleteMovie(id);
+    @DeleteMapping("/deleteMovie/{id}")
+    public ResponseEntity<MovieResponse> deleteMovie(@PathVariable Long id) {
+        return moviesService.findById(id).map(m -> {
+                    moviesService.deleteMovie(m);
+                    return new ResponseEntity<MovieResponse>(HttpStatus.OK);
+                }).orElseGet(() ->new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/movies/getByTitle")
-    public ResponseEntity<MovieResponse> getByTitle(@Valid @RequestBody FindMovieRequest findMovieRequest) {
-        return new ResponseEntity<>(moviesService.findByTitle(findMovieRequest.getTitle()), HttpStatus.OK);
+    @GetMapping("/getByTitle/{title}")
+    public ResponseEntity<MovieResponse> getByTitle(@PathVariable String title) {
+        return moviesService.findByTitle(title).map(movie -> new ResponseEntity<>(movie, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

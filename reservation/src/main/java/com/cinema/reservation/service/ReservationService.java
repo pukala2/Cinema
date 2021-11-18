@@ -15,6 +15,7 @@ import com.cinema.reservation.request.DeleteReservationRequest;
 import com.cinema.reservation.response.ClientResponse;
 import com.cinema.reservation.response.ReservationResponse;
 import com.cinema.reservation.utils.ReservationCodeGenerator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,21 +63,13 @@ class ReservationService {
     List<ReservationResponse> save(CreateReservationRequest createReservationRequest, List<SeatResponse> seatsForReservation) {
         List<ReservationResponse> reservationResponses = new ArrayList<>();
 
-        checkTitle(new FindMovieRequest(createReservationRequest.getMovieTitle()));
+        var response =  moviesFeignClient.getByTitle(createReservationRequest.getMovieTitle());
 
         List<Reservation> reservations = saveReservation(createReservationRequest, seatsForReservation);
         reservations.forEach(reservation -> {
             reservationResponses.add(new ReservationResponse(reservation));
         });
         return reservationResponses;
-    }
-
-    private void checkTitle(FindMovieRequest findMovieRequest) {
-        MovieResponse movie = moviesFeignClient.getByTitle(findMovieRequest);
-
-        if (movie == null) {
-            throw new NotExistingMovieException();
-        }
     }
 
     private List<Reservation> saveReservation(CreateReservationRequest createReservationRequest, List<SeatResponse> seatsForReservation) {
