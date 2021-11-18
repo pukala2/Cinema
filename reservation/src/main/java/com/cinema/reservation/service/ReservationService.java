@@ -1,25 +1,20 @@
 package com.cinema.reservation.service;
 
 import com.cinema.reservation.client.MoviesFeignClient;
-import com.cinema.reservation.client.model.FindMovieRequest;
-import com.cinema.reservation.client.model.MovieResponse;
 import com.cinema.reservation.client.model.SeatResponse;
 import com.cinema.reservation.entity.Client;
 import com.cinema.reservation.entity.Reservation;
-import com.cinema.reservation.exception.NotExistingMovieException;
-import com.cinema.reservation.exception.NotExistingReservationCodeException;
 import com.cinema.reservation.repository.ClientRepository;
 import com.cinema.reservation.repository.ReservationRepository;
 import com.cinema.reservation.request.CreateReservationRequest;
-import com.cinema.reservation.request.DeleteReservationRequest;
 import com.cinema.reservation.response.ClientResponse;
 import com.cinema.reservation.response.ReservationResponse;
 import com.cinema.reservation.utils.ReservationCodeGenerator;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,15 +44,11 @@ class ReservationService {
         return clients;
     }
 
-    ReservationResponse remove(DeleteReservationRequest deleteReservationRequest) {
-        Reservation reservation = reservationRepository.findByReservationCode(
-                deleteReservationRequest.getReservationCode());
-
-        if (reservation == null) {
-            throw new NotExistingReservationCodeException();
-        }
-        reservationRepository.delete(reservation);
-        return new ReservationResponse(reservation);
+    Optional<Reservation> delete(String reservationCode) {
+        return reservationRepository.findByReservationCode(reservationCode).map(reservation -> {
+            reservationRepository.delete(reservation);
+            return reservation;
+        });
     }
 
     List<ReservationResponse> save(CreateReservationRequest createReservationRequest, List<SeatResponse> seatsForReservation) {

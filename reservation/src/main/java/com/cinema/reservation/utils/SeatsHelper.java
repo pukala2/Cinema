@@ -1,27 +1,28 @@
 package com.cinema.reservation.utils;
 
 import com.cinema.reservation.client.model.SeatResponse;
-import com.cinema.reservation.exception.BookedSeatException;
-import com.cinema.reservation.exception.SeatsNotMatchException;
 import com.cinema.reservation.request.CreateReservationRequest;
 import com.cinema.reservation.request.CreateSeatRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SeatsHelper {
 
-    static public List<SeatResponse> getSeatsForReservationFromRoom(List<SeatResponse> seatsFromRoom,
+    static public Optional<List<SeatResponse>> getSeatsForReservationFromRoom(List<SeatResponse> seatsFromRoom,
                                                               CreateReservationRequest createReservationRequest) {
         List<SeatResponse> seatsForReservation = getSeatsWithTheSameNumber(seatsFromRoom,
                 createReservationRequest.getCreateSeatRequests());
-
+        if (seatsForReservation.isEmpty() || seatsForReservation.size() != createReservationRequest.getCreateSeatRequests().size()) {
+            return Optional.empty();
+        }
         if (seatsForReservation.stream().anyMatch(SeatResponse::getIsBocked)) {
-            throw new BookedSeatException();
+            return Optional.empty();
         }
         seatsForReservation.forEach(seatResponseRes -> seatResponseRes.setIsBocked(true));
-        return seatsForReservation;
+        return Optional.of(seatsForReservation);
     }
 
     static private List<SeatResponse> getSeatsWithTheSameNumber(List<SeatResponse> seatsFromRoom, List<CreateSeatRequest> seatsRequest) {
@@ -30,9 +31,6 @@ public class SeatsHelper {
             if (Objects.equals(seatResponseRes.getSeatNumber(), seatReq.getSeatNumber())) {
                 seatsForReservation.add(seatResponseRes);
             }}));
-        if (seatsForReservation.isEmpty() || seatsForReservation.size() != seatsRequest.size()) {
-            throw new SeatsNotMatchException();
-        }
         return seatsForReservation;
     }
 }

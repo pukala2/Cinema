@@ -6,11 +6,12 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Room {
+public class RoomResponse {
+    private Long id;
     private Integer roomNumber;
     private Integer seatsNumber;
-    List<SeatResponse> seats;
+    private List<SeatResponse> seats;
 }

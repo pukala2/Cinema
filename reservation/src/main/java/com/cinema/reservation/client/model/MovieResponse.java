@@ -16,10 +16,4 @@ public class MovieResponse {
     private String title;
 
     private String category;
-
-    public MovieResponse(Movie movie) {
-        this.id = movie.getId();
-        this.title = movie.getTitle();
-        this.category = movie.getCategory();
-    }
 }
