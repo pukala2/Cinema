@@ -2,7 +2,6 @@ package com.cinema.rooms.service;
 
 import com.cinema.rooms.entity.Room;
 import com.cinema.rooms.entity.Seat;
-import com.cinema.rooms.exception.NotExistingSeatException;
 import com.cinema.rooms.repository.SeatRepository;
 import com.cinema.rooms.request.UpdateSeatRequest;
 import org.springframework.stereotype.Service;
@@ -21,17 +20,19 @@ class SeatService {
         this.seatRepository = seatRepository;
     }
 
-    void removeSeatsInRoom(Integer roomNumber) {
-        List<Seat> seats = getSeatsFromRoom(roomNumber);
-        seatRepository.deleteAll(seats);
+    boolean removeSeatsInRoom(Integer roomNumber) {
+        return getSeatsFromRoom(roomNumber).map(seats -> {
+            seatRepository.deleteAll(seats);
+            return true;
+        }).orElse(false);
     }
 
-    List<Seat> getSeatsFromRoom(final Integer roomNumber) {
+    Optional<List<Seat>> getSeatsFromRoom(final Integer roomNumber) {
         return seatRepository.getByRoomNumber(roomNumber);
     }
 
-    List<Seat> saveAllSeats(List<Seat> seats) {
-        return seatRepository.saveAll(seats);
+    void saveAllSeats(List<Seat> seats) {
+        seatRepository.saveAll(seats);
     }
 
     List<Seat> createSeats(Room room, int seatsNumber) {
@@ -44,21 +45,20 @@ class SeatService {
         return seats;
     }
 
-    Seat changeSeatStatus(final UpdateSeatRequest updateSeatRequest) {
-        Optional<Seat> seat = getSeatFromRoom(updateSeatRequest.getRoomNumber(),
-                updateSeatRequest.getSeatNumber());
-
-        if (seat.isPresent()) {
-            seat.get().setIsBocked(updateSeatRequest.getIsBocked());
-            return seatRepository.save(seat.get());
-        }
-        throw new NotExistingSeatException();
+    Optional<Seat> changeSeatStatus(final UpdateSeatRequest updateSeatRequest) {
+        return getSeatFromRoom(updateSeatRequest.getRoomNumber(),
+                updateSeatRequest.getSeatNumber())
+                .map(s -> changeStatus(s, updateSeatRequest.getIsBocked()));
     }
 
     private Optional<Seat> getSeatFromRoom(Integer roomNumber, Integer seatNumber) {
-        List<Seat> seats = getSeatsFromRoom(roomNumber);
-        return seats.stream().filter(s -> Objects.equals(s.getSeatNumber(), seatNumber))
-                .findAny();
+        return getSeatsFromRoom(roomNumber).map(ArrayList::new)
+                .orElse(new ArrayList<>())
+                .stream().filter(s -> Objects.equals(s.getSeatNumber(), seatNumber)).findAny();
     }
 
+    private Seat changeStatus(Seat seat, boolean status) {
+        seat.setIsBocked(status);
+        return seatRepository.save(seat);
+    }
 }

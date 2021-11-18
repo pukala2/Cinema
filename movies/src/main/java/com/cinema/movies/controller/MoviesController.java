@@ -1,7 +1,5 @@
 package com.cinema.movies.controller;
 
-import com.cinema.movies.config.MoviesServiceConfig;
-import com.cinema.movies.entity.Movie;
 import com.cinema.movies.request.CreateMovieRequest;
 import com.cinema.movies.request.UpdateMovieRequest;
 import com.cinema.movies.response.MovieResponse;
@@ -13,18 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-// wyjatek not found bez sensu, ma byc optional
-// jezeli jeden  param przekazuje path variable
-// wyjebac nazwy w oczywistych metodach restowych
-
-
 @RequestMapping("/movie")
 @RestController
 public class MoviesController {
 
     final private MoviesService moviesService;
 
-    public MoviesController(MoviesService moviesService, MoviesServiceConfig moviesServiceConfig) {
+    public MoviesController(MoviesService moviesService) {
         this.moviesService = moviesService;
     }
 
