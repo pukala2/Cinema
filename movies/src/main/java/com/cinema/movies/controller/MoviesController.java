@@ -40,18 +40,14 @@ public class MoviesController {
 
     @PutMapping()
     public ResponseEntity<MovieResponse> updateMovie(@Valid @RequestBody UpdateMovieRequest updateMovieRequest) {
-        return moviesService.findById(updateMovieRequest.getId()).map(m -> {
-            moviesService.updateMovie(m, updateMovieRequest);
-            return new ResponseEntity<MovieResponse>(HttpStatus.OK);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return moviesService.updateMovie(updateMovieRequest).map(m -> new ResponseEntity<>(new MovieResponse(m), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/deleteMovie/{id}")
     public ResponseEntity<MovieResponse> deleteMovie(@PathVariable Long id) {
-        return moviesService.findById(id).map(m -> {
-                    moviesService.deleteMovie(m);
-                    return new ResponseEntity<MovieResponse>(HttpStatus.OK);
-                }).orElseGet(() ->new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return moviesService.deleteMovie(id) ?
+                new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/getByTitle/{title}")

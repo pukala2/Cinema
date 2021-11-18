@@ -192,5 +192,4 @@ class MoviesControllerTest {
                         .contentType("application/json"))
                 .andExpect(status().isNotFound());
     }
-
 }

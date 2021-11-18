@@ -26,13 +26,6 @@ public class MoviesService {
         return movieResponses;
     }
 
-    public Movie updateMovie(Movie movie, UpdateMovieRequest updateMovieRequest) {
-
-        movie.setTitle(updateMovieRequest.getTitle());
-        movie.setCategory(updateMovieRequest.getCategory());
-        return save(movie);
-    }
-
     public MovieResponse addMovie(Movie movie) {
         moviesRepository.save(movie);
         return new MovieResponse(moviesRepository.save(movie));
@@ -48,15 +41,24 @@ public class MoviesService {
                 .title(createMovieRequest.getTitle()).build()));
     }
 
-    public void deleteMovie(Movie movie) {
-        moviesRepository.delete(movie);
-    }
-
     public Optional<MovieResponse> findByTitle(String title) {
         return moviesRepository.findByTitle(title).map(MovieResponse::new);
     }
 
-    public Optional<Movie> findById(Long id) {
-        return moviesRepository.findById(id);
+    public Optional<Movie> updateMovie(UpdateMovieRequest updateMovieRequest) {
+        return moviesRepository.findById(updateMovieRequest.getId()).map(m -> updateMovie(m, updateMovieRequest));
+    }
+
+    private Movie updateMovie(Movie movie, UpdateMovieRequest updateMovieRequest) {
+        movie.setTitle(updateMovieRequest.getTitle());
+        movie.setCategory(updateMovieRequest.getCategory());
+        return save(movie);
+    }
+
+    public boolean deleteMovie(Long id) {
+        return moviesRepository.findById(id).map(m -> {
+            moviesRepository.delete(m);
+            return true;
+        }).orElse(false);
     }
 }
