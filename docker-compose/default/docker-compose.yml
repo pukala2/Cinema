@@ -43,7 +43,7 @@ services:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
 
-  accounts:
+  reservation:
     image: pukala93/cinema_reservation:latest
     mem_limit: 700m
     ports:
@@ -65,7 +65,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
   
-  loans:
+  rooms:
     image: pukala93/cinema_rooms:latest
     mem_limit: 700m
     ports:
@@ -87,7 +87,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
       SPRING_ZIPKIN_BASEURL: http://zipkin:9411/
     
-  cards:
+  movies:
     image: pukala93/cinema_movies:latest
     mem_limit: 700m
     ports:
