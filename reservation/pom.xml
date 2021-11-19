@@ -129,17 +129,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<configuration>
-								<image>
-									<name>pukala93/cinema_${project.artifactId}</name>
-								</image>
-							</configuration>
-						</exclude>
-					</excludes>
+					<image>
+						<name>pukala93/cinema_${project.artifactId}</name>
+					</image>
 				</configuration>
 			</plugin>
 			<plugin>

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "movies", path = "movies/")
+@FeignClient(name = "movies", path = "movie/")
 public interface MoviesFeignClient {
     @RequestMapping(method = RequestMethod.GET, value = "getByTitle/{title}", consumes = "application/json")
     ResponseEntity<MovieResponse> getByTitle(@PathVariable String title);
