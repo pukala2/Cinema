@@ -41,13 +41,11 @@ public class SeatsService {
     }
 
     ReservationResponse changeSeatStatus(Reservation reservation) {
-
-        UpdateSeatRequest updateSeatRequest = UpdateSeatRequest.builder()
+        roomsFeignClient.changeSeatReservation(UpdateSeatRequest.builder()
                 .seatNumber(reservation.getSeatNumber())
                 .roomNumber(reservation.getRoomNumber())
                 .isBocked(false)
-                .build();
-        roomsFeignClient.changeSeatReservation(updateSeatRequest);
+                .build());
         return new ReservationResponse(reservation);
     }
 }
